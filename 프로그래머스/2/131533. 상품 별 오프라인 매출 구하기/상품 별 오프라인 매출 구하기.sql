@@ -1,0 +1,20 @@
+-- 코드를 입력하세요
+SELECT
+    A.PRODUCT_CODE,
+    A.PRICE * B.TOTAL_SALES AS SALES
+FROM
+    PRODUCT AS A
+INNER JOIN
+    (
+        SELECT
+            PRODUCT_ID,
+            SUM(SALES_AMOUNT) AS TOTAL_SALES
+        FROM    
+            OFFLINE_SALE
+        GROUP BY
+            PRODUCT_ID
+    ) AS B
+ON
+    A.PRODUCT_ID = B.PRODUCT_ID
+ORDER BY
+    SALES DESC, A.PRODUCT_CODE ASC;
