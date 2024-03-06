@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 class Solution {
     public int solution(int n, int[][] computers) {
+        //Floyd-Warshall algorithm
         int answer = 0;
         int[][] linknode = new int[n][n];
         int[] temp;
@@ -12,10 +13,9 @@ class Solution {
             temp = computers[i];
             for (int j = 0; j < n; j++) {
                 linknode[i][j] = temp[j];
-                linknode[j][i] = temp[j];
             }
         }
-
+        
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
