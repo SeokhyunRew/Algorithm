@@ -1,56 +1,32 @@
-import java.util.ArrayList;
+import java.util.*;
 
 class Solution {
+    static int count = 0;
+    static List<Integer> tempList = new ArrayList<>();
+    static boolean[] visited;
     public int solution(int n, int[][] computers) {
-        //Floyd-Warshall algorithm
-        int answer = 0;
-        int[][] linknode = new int[n][n];
-        int[] temp;
-        ArrayList<Integer> keep = new ArrayList<>();
-        int count=0;
+        visited = new boolean[n];
 
         for (int i = 0; i < n; i++) {
-            temp = computers[i];
-            for (int j = 0; j < n; j++) {
-                linknode[i][j] = temp[j];
-            }
-        }
-        
-        for (int k = 0; k < n; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (linknode[i][k] == 1 && linknode[k][j] == 1) {
-                        linknode[i][j] = 1;
-                    }
-                }
-            }
+            tempList.add(i);
         }
 
-        for(int i=1; i<=n; i++){
-            keep.add(i);
-        }
-
-        for (int i = 0; i < n; i++) {
-            if(!keep.contains(i+1)){
-                continue;
+        for (int j = 0; j < computers.length; j++) {
+            if (!visited[j]) {
+                bfs(computers, j);
+                count++;
             }
-            for (int j = 0; j < n; j++) {
-                if(i==j){
-                    continue;
-                }
-                if(linknode[i][j]==1){
-                    if(keep.contains(i+1)){
-                        keep.remove(Integer.valueOf(i+1));
-                    }
-                    if(keep.contains(j+1)){
-                        keep.remove(Integer.valueOf(j+1));
-                    }
-                }
-            }
-            count++;
         }
-
         return count;
-        
+    }
+    
+    public static void bfs(int[][] computers, int node){
+        visited[node] = true;
+
+        for (int i = 0; i < computers[node].length; i++) {
+            if (computers[node][i] == 1 && !visited[i]) {
+                bfs(computers, i);
+            }
         }
     }
+}
