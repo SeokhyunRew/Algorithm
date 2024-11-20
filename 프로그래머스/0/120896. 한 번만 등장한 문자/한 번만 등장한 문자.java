@@ -8,8 +8,8 @@ class Solution {
             map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
         
-        for(Map.Entry<Character, Integer> entry : map.entrySet()){
-            if(entry.getValue()==1) sb.append(entry.getKey());
+        for(char key : map.keySet()){
+            if(map.get(key)==1) sb.append(key);
         }
         
         char[] array = sb.toString().toCharArray();
