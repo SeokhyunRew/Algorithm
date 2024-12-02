@@ -1,30 +1,22 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] numlist, int n) {
-        int[] answer = new int[numlist.length];
-        HashMap<Integer, Integer> map = new HashMap<>();
-        int temp;
-        int num_before=0;
-        
-        Arrays.sort(numlist);
-        
-        for(int i=0; i<numlist.length; i++){
-            answer[i] = Math.abs(numlist[i]-n);
-            map.put(answer[i], numlist[i]);
-        }
-        
-        Arrays.sort(answer);
-        
-        for(int i=0; i<numlist.length; i++){
-            temp = answer[i];    
-            if(num_before==answer[i]){
-                answer[i] = n-answer[i];
-            }else{
-                answer[i] = map.get(answer[i]);
+         // 정렬 로직 직접 구현
+        for (int i = 0; i < numlist.length - 1; i++) {
+            for (int j = i + 1; j < numlist.length; j++) {
+                int distI = Math.abs(numlist[i] - n); // 현재 요소의 거리
+                int distJ = Math.abs(numlist[j] - n); // 비교 요소의 거리
+                
+                // 거리 비교 후 정렬
+                if (distI > distJ || (distI == distJ && numlist[i] < numlist[j])) {
+                    // 두 값을 교환
+                    int temp = numlist[i];
+                    numlist[i] = numlist[j];
+                    numlist[j] = temp;
+                }
             }
-            num_before=temp;
         }
         
-        return answer;
+        return numlist; // 정렬된 배열 반환
     }
 }
