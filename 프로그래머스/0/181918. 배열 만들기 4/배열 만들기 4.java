@@ -1,25 +1,29 @@
 import java.util.*;
 class Solution {
     public int[] solution(int[] arr) {
-        ArrayList<Integer> array = new ArrayList<>();
+        Stack<Integer> stack = new Stack<>();
         int index=0;
         
         while(index<arr.length){
-            if(array.size()==0){
-                array.add(arr[index]);
+            if(stack.empty()){
+                stack.push(arr[index]);
                 index++;
             }
-            else if(array.get(array.size()-1)<arr[index]){
-                array.add(arr[index]);
+            else if(stack.peek()<arr[index]){
+                stack.push(arr[index]);
                 index++;
             }
-            else array.remove(array.size()-1);
+            else stack.pop();
         }
         
-        int[] stk = new int[array.size()];
-        for(int i=0; i<array.size(); i++){
-            stk[i] = array.get(i);
+        int[] stk = new int[stack.size()];
+        index = 0;
+        while(!stack.empty()){
+            stk[index] = stack.pop();
+            index ++;
         }
+        
+        Arrays.sort(stk);
         
         return stk;
     }
