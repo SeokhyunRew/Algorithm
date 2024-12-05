@@ -1,13 +1,12 @@
+import java.util.*;
 class Solution {
     public int solution(String before, String after) {
-        for(String str : after.split("")){
-            if(before.contains(str)){
-                before = before.replaceFirst(str, "");
-                after = after.replaceFirst(str, "");
-            }
-        }
+        char[] before_array = before.toCharArray();
+        char[] after_array = after.toCharArray();
         
-        if(before.isEmpty()&&after.isEmpty()) return 1;
-        else return 0;
+        Arrays.sort(before_array);
+        Arrays.sort(after_array);
+        
+        return (Arrays.equals(before_array, after_array))?1:0;
     }
 }
