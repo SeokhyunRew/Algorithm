@@ -1,9 +1,11 @@
 public class Solution {
     public int solution(int n) {
         int answer = 0;
-
-        for(String str : String.valueOf(n).split("")){
-            answer += Integer.parseInt(str);
+        
+        while(true){
+            answer += n%10;
+            n = (int) n/10;
+            if(n==0) break;
         }
 
         return answer;
