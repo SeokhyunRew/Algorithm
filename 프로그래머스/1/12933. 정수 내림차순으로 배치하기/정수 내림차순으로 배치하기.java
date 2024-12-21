@@ -12,12 +12,12 @@ class Solution {
             index ++;
         }
         
-        Arrays.sort(array, Collections.reverseOrder());
+        Arrays.sort(array);
         
         for(int num : array){
             sb.append(num);
         }
         
-        return Long.parseLong(sb.toString());
+        return Long.parseLong(sb.reverse().toString());
     }
 }
