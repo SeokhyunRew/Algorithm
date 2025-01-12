@@ -3,7 +3,7 @@ class Solution {
         int answer = 0;
         
         for(int i=0; i<=t.length()-p.length(); i++){
-            if(Long.valueOf(p)>=Long.valueOf(t.substring(i,i+p.length()))) answer++;
+            if(Long.parseLong(p)>=Long.parseLong(t.substring(i,i+p.length()))) answer++;
         }
         
         return answer;
