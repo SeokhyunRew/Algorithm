@@ -9,7 +9,7 @@ class Solution {
 
             for (int j = 0; j < index; ) {
                 ch_temp++;
-                if (ch_temp > 'z') ch_temp = 'a';
+                if (ch_temp > 'z') ch_temp = (char) (ch_temp-'z'+'a'-1);
                 if (skip.contains(String.valueOf(ch_temp))) continue;
                 j++;
             }
