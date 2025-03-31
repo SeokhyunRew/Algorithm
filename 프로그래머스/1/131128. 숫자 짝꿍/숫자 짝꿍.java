@@ -2,7 +2,7 @@ import java.util.*;
 class Solution {
     public String solution(String X, String Y) {
         boolean temp_b = false;
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        ArrayList<Integer> list = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         
         int temp_x = 0;
@@ -18,17 +18,17 @@ class Solution {
             temp_y -= Y.length();
             
             if(temp_x==0||temp_y==0) continue;
-            else if(temp_x<=temp_y) for(int j=0; j<temp_x; j++) pq.add(i);
-            else for(int j=0; j<temp_y; j++) pq.add(i);
+            else if(temp_x<=temp_y) for(int j=0; j<temp_x; j++) list.add(i);
+            else for(int j=0; j<temp_y; j++) list.add(i);
             
             temp_b = true;
         }
         
-        while (!pq.isEmpty()) {
-            sb.append(pq.poll());
+        for(int i=0; i<list.size(); i++) {
+            sb.append(list.get(i));
         }
         
-        String answer = sb.reverse().toString();
+        String answer = sb.toString();
         
         return (temp_b==false)?"-1":(answer.charAt(0)=='0')?"0":answer;
     }
