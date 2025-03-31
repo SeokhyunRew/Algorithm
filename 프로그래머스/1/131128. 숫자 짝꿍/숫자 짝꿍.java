@@ -2,7 +2,6 @@ import java.util.*;
 class Solution {
     public String solution(String X, String Y) {
         boolean temp_b = false;
-        String temp_str;
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         StringBuilder sb = new StringBuilder();
         
