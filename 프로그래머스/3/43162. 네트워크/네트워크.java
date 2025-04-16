@@ -3,10 +3,7 @@ import java.util.ArrayList;
 class Solution {
     public int solution(int n, int[][] computers) {
         int answer = 0;
-        List<List<Integer>> network = new ArrayList<>();
         boolean[] visited = new boolean[n+1];
-        
-        for(int i=0; i<n; i++) network.add(new ArrayList<>());
         
         for(int i=1; i<=n; i++){
             if(visited[i]) continue;
