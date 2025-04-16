@@ -2,7 +2,6 @@ import java.util.*;
 
 class Solution {
     public int solution(String begin, String target, String[] words) {
-        if (!Arrays.asList(words).contains(target)) return 0;
 
         Queue<Word> queue = new LinkedList<>();
         boolean[] visited = new boolean[words.length];
