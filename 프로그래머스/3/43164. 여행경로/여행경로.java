@@ -1,42 +1,62 @@
 import java.util.*;
 
-/**
- * [PGS] 여행 경로 / LV3
- */
-public class PGS_Travel {
-    public static void main(String[] args) {
-        String[][] qu = {{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}};
-        Solution solution = new Solution();
-        String[] str = solution.solution(qu);
-
-        System.out.println(Arrays.toString(str));
-    }
-}
-
 class Solution {
-    static Map<String, PriorityQueue<String>> map;
-    static ArrayList<String> answer = new ArrayList<>();
+    ArrayList<String[]> rout = new ArrayList<>();
+    String[] oneRout;
+    int index = 0;
 
     public String[] solution(String[][] tickets) {
-        map = new HashMap<>();
+        oneRout = new String[tickets.length + 1];
+        boolean[] useTickets = new boolean[tickets.length];
+        oneRout[0] = "ICN";
+        dfs(tickets, "ICN", useTickets);
 
-        for (String[] ticket : tickets) {
-            //if(map.get(ticket[0]) == null) map.put(ticket[0], new PriorityQueue<>())
-            //map.get(ticket[0]).add(ticket[1]) 과 같음
-            map.computeIfAbsent(ticket[0], k -> new PriorityQueue<>())
-                    .add(ticket[1]);
-        }
-
-        DFS("ICN");
-
-        return answer.toArray(new String[0]);
+        return select();
     }
 
-    private void DFS(String start) {
-        PriorityQueue<String> pq = map.get(start);
-        while (pq != null && !pq.isEmpty()) {
-            DFS(pq.poll());
+    private void dfs(String[][] tickets, String start, boolean[] useTickets) {
+        if (finish(useTickets)) {
+            rout.add(oneRout.clone()); // 기존 배열을 복사해서 추가
+            return;
         }
-        answer.add(0, start);
+
+        for (int i = 0; i < tickets.length; i++) {
+            if (canGo(start, tickets[i]) && !useTickets[i]) {
+                useTickets[i] = true;
+                oneRout[++index] = tickets[i][1];
+                dfs(tickets, tickets[i][1], useTickets);
+                useTickets[i] = false; // 백트래킹
+                index--; // 백트래킹
+            }
+        }
+    }
+
+    private boolean canGo(String start, String[] list) {
+        return start.equals(list[0]);
+    }
+
+    private boolean finish(boolean[] useTickets) {
+        for (boolean b : useTickets) {
+            if (!b) return false;
+        }
+        return true;
+    }
+
+    private String[] select() {
+        String[] first = rout.get(0);
+
+        for (String[] list : rout) {
+            for (int i = 0; i < list.length; i++) {
+                String s1 = first[i];
+                String s2 = list[i];
+                if (s1.compareTo(s2) > 0) {
+                    first = list; // 비교 후 더 작은 알파벳순으로 선택
+                    break;
+                } else if (s1.compareTo(s2) < 0) {
+                    break;
+                }
+            }
+        }
+        return first;
     }
 }
