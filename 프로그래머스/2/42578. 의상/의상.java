@@ -3,20 +3,14 @@ class Solution {
     public int solution(String[][] clothes) {
         int answer = 1;
         
-        HashMap<String, ArrayList<String>> map = new HashMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
         
         for(String[] s : clothes){
-            String category=s[1];
-            String clothe=s[0];
-            if(map.containsKey(category)) map.get(category).add(clothe);
-            else{
-                map.put(category, new ArrayList<String>());
-                map.get(category).add(clothe);
-            }
+            map.put(s[1], map.getOrDefault(s[1], 0)+1);
         }
         
-        for(Map.Entry<String, ArrayList<String>> entry : map.entrySet()){
-            answer *= entry.getValue().size()+1;
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+            answer *= entry.getValue()+1;
         }
         
         return answer-1;
