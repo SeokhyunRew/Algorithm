@@ -1,47 +1,52 @@
-import java.util.*;
-
+import java.util.Queue;
+import java.util.LinkedList;
 class Solution {
     public int solution(String begin, String target, String[] words) {
-
-        Queue<Word> queue = new LinkedList<>();
         boolean[] visited = new boolean[words.length];
-
+        Queue<Word> queue = new LinkedList<>();
+        
         queue.offer(new Word(begin, 0));
-
-        while (!queue.isEmpty()) {
-            Word current = queue.poll();
-
-            if (current.word.equals(target)) {
-                return current.depth;
+        
+        while(!queue.isEmpty()){
+            
+            Word word = queue.poll();
+            String curr = word.str;
+            int depth = word.depth;
+            
+            if(curr.equals(target)) return depth;
+            
+            for(int i=0; i<words.length; i++){
+                if(visited[i] || !canChange(words[i], curr)) continue;
+                queue.offer(new Word(words[i], depth+1));
+                visited[i]=true;
             }
-
-            for (int i = 0; i < words.length; i++) {
-                if (!visited[i] && canConvert(current.word, words[i])) {
-                    visited[i] = true;
-                    queue.offer(new Word(words[i], current.depth + 1));
-                }
-            }
+            
         }
-
-        return 0; // 변환 불가능
+        
+        return 0;
     }
-
-    private boolean canConvert(String a, String b) {
-        int diff = 0;
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) != b.charAt(i)) diff++;
-            if (diff > 1) return false;
+    
+    private boolean canChange(String s1, String s2){
+        char[] arrC1 = s1.toCharArray();
+        char[] arrC2 = s2.toCharArray();
+        int temp = 0;
+        
+        for(int i=0; i<arrC1.length; i++){
+            if(arrC1[i]!=arrC2[i]) temp++;
         }
-        return diff == 1;
-    }
-
-    class Word {
-        String word;
+        
+        return (temp==1)?true:false;
+        
+        }
+    
+    private class Word{
+        String str;
         int depth;
-
-        Word(String word, int depth) {
-            this.word = word;
+        
+        public Word(String str, int depth){
+            this.str = str;
             this.depth = depth;
         }
+        
     }
 }
