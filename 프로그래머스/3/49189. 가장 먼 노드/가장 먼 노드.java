@@ -1,51 +1,51 @@
 import java.util.*;
 
-public class Solution {
+class Solution {
     public int solution(int n, int[][] edge) {
-        int answer = 0;
-        
-        // 인접 리스트 생성
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
+        // 1) 그래프 생성 (무향 인접 리스트)
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            graph.put(i, new ArrayList<>());
         }
         for (int[] e : edge) {
-            graph.get(e[0]).add(e[1]);
-            graph.get(e[1]).add(e[0]);
+            int u = e[0], v = e[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
         }
-        
-        // 방문 여부 배열 및 거리 배열 초기화
-        boolean[] visited = new boolean[n + 1];
-        int[] distance = new int[n + 1];
-        
-        // BFS 수행
+
+        // 2) BFS로 1번 노드부터 각 노드까지 최단 거리 계산
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, -1);
         Queue<Integer> queue = new LinkedList<>();
-        queue.offer(1); // 시작 노드는 1번 노드
-        visited[1] = true;
+        dist[1] = 0;
+        queue.offer(1);
+
         while (!queue.isEmpty()) {
-            int node = queue.poll();
-            for (int neighbor : graph.get(node)) {
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true;
-                    distance[neighbor] = distance[node] + 1;
-                    queue.offer(neighbor);
+            int curr = queue.poll();
+            for (int next : graph.get(curr)) {
+                if (dist[next] == -1) {
+                    dist[next] = dist[curr] + 1;
+                    queue.offer(next);
                 }
             }
         }
-        
-        // 최단 경로 중에서 가장 긴 거리 계산
-        int maxDistance = 0;
-        for (int dist : distance) {
-            maxDistance = Math.max(maxDistance, dist);
+
+        // 3) 최댓값 거리 찾기
+        int maxDist = 0;
+        for (int i = 2; i <= n; i++) {
+            if (dist[i] > maxDist) {
+                maxDist = dist[i];
+            }
         }
-        
-        // 가장 긴 거리를 가진 노드의 수 계산
-        for (int dist : distance) {
-            if (dist == maxDistance) {
+
+        // 4) 최댓값 거리인 노드 개수 세기
+        int answer = 0;
+        for (int i = 2; i <= n; i++) {
+            if (dist[i] == maxDist) {
                 answer++;
             }
         }
-        
+
         return answer;
     }
 }
