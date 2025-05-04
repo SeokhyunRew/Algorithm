@@ -1,24 +1,25 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int n, String[] words) {
-        Set<String> usedWords = new HashSet<>();
-        usedWords.add(words[0]);
+        int[] answer = new int[2];
+        char prev=words[0].charAt(words[0].length()-1);
+        String curr;
         
-        for (int i = 1; i < words.length; i++) {
-            String prev = words[i - 1];
-            String curr = words[i];
-            
-            // 규칙 위반 1: 끝말잇기 불일치
-            // 규칙 위반 2: 이미 등장한 단어
-            if (curr.length() <= 1 || usedWords.contains(curr) || prev.charAt(prev.length() - 1) != curr.charAt(0)) {
-                int person = (i % n) + 1;
-                int round = (i / n) + 1;
-                return new int[] { person, round };
+        Set<String> useWords = new HashSet<>();
+        useWords.add(words[0]);
+        
+        for(int i=1; i<words.length; i++){
+            curr=words[i];
+            if(useWords.contains(curr)||prev!=curr.charAt(0)){
+                answer[0] = (i)%n+1;
+                if((i+1)%n==0) answer[1] = (i+1)/n;
+                else answer[1] = (i+1)/n+1;
+                return answer;
             }
-            usedWords.add(curr);
+            useWords.add(curr);
+            prev = curr.charAt(curr.length()-1);
         }
-        
-        return new int[] { 0, 0 };
+
+        return answer;
     }
 }
