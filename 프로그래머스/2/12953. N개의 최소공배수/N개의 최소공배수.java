@@ -1,22 +1,26 @@
 import java.util.*;
 class Solution {
     public int solution(int[] arr) {
-        boolean check = true;
-        int index = 1;
-        
-        Arrays.sort(arr);
-        
-        int temp = arr[arr.length-1];
-        
-        
-        while(check){
-            for(int i=0; i<arr.length; i++){
-                if((temp*index)%arr[i] != 0) break;
-                if(i==arr.length-1) check = false;
-            }
-            index++;
+        int num;
+        int gcd;
+        int lcm;
+
+        gcd=getGCD(arr[0], arr[1]);
+        lcm=arr[0]*arr[1]/gcd;
+
+        for(int i=2; i<arr.length; i++){
+            num=arr[i];
+            gcd=getGCD(lcm,num);
+            lcm=lcm*num/gcd;                     
         }
         
-        return temp*(index-1);
+        return lcm;
+    
     }
+    
+    private int getGCD(int a, int b){
+        if(a%b==0) return b;
+        return getGCD(b, a%b);
+    }
+    
 }
