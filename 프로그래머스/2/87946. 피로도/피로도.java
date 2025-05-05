@@ -15,7 +15,7 @@ class Solution {
             int atLeastK=dungeons[i][0];
             int after=dungeons[i][1];
             
-            if(k>=atLeastK&&k-after>0&&!visited[i]){
+            if(k>=atLeastK&&k-after>=0&&!visited[i]){
                 visited[i]=true;
                 canGo=true;
                 dfs(k-after, count+1, dungeons, visited);
