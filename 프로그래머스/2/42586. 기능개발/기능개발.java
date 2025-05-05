@@ -1,38 +1,29 @@
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.ArrayList;
-
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
+        ArrayList<Integer> arr = new ArrayList<>();
         int day = 0;
-        int count = 0;
-        Queue<int[]> queue = new LinkedList<>();
-        ArrayList<Integer> arrayList = new ArrayList<>();
+        int stack = 0;
+        int currProgress;
+        int currSpeed;
         
-        for(int i=0; i<progresses.length; i++) queue.add(new int[] {progresses[i], speeds[i]});
-        
-        while(!queue.isEmpty()){
-            int[] currArray = queue.poll();
-            int currSpeed = currArray[1];
-            int currProgress = currArray[0]+day*currSpeed;
+        for(int i=0; i<progresses.length; i++){
+            currProgress = progresses[i];
+            currSpeed = speeds[i];
             
-            if(currProgress >= 100){
-                count++;
-                continue;
-            }else arrayList.add(count);
+            if(currProgress+day*currSpeed < 100){
+                arr.add(stack);
+                day = ((100-currProgress)%currSpeed==0)?(100-currProgress)/currSpeed:(100-currProgress)/currSpeed+1;
+                stack = 0;
+            }
                 
-            count = 0;
-            
-            if((100-currProgress)%currSpeed==0) day += (100-currProgress)/currSpeed;
-            else day += (100-currProgress)/currSpeed + 1;
-            
-            count ++;
+            stack++;
         }
-        arrayList.add(count);
         
-        int[] answer = new int[arrayList.size()-1];
+        arr.add(stack);
+        int[] answer = new int[arr.size()-1];
         
-        for(int i=0; i<answer.length; i++) answer[i] = arrayList.get(i+1);
+        for(int i=1; i<arr.size(); i++)  answer[i-1] = arr.get(i);
         
         return answer;
     }
