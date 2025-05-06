@@ -1,58 +1,45 @@
 import java.util.*;
-
 class Solution {
-    int maxSheep = 0;
-    int[] info;
-    Map<Integer, List<Integer>> graph = new HashMap<>();
-
+    int answer = 1;
+    int[] globalInfo;
     public int solution(int[] info, int[][] edges) {
-        this.info = info;
-
-        // 그래프 생성
-        for (int i = 0; i < edges.length; i++) {
-            int from = edges[i][0];
-            int to = edges[i][1];
-
-            if (!graph.containsKey(from)) {
-                graph.put(from, new ArrayList<Integer>());
-            }
-            graph.get(from).add(to);
+        globalInfo = info;
+        Map<Integer, ArrayList<Integer>> graph = new HashMap<>();
+        
+        for(int i=0; i<edges.length; i++){
+            int from=edges[i][0];
+            if(!graph.containsKey(from)) graph.put(from, new ArrayList<Integer>());
+            graph.get(from).add(edges[i][1]);
         }
-
-        List<Integer> nextNodes = new ArrayList<Integer>();
-        nextNodes.add(0); // 시작 노드 0부터
-        dfs(0, 0, nextNodes);
-
-        return maxSheep;
+        
+        System.out.println(graph);
+        dfs(1, 0, graph.get(0), graph);
+        
+        return answer;
     }
-
-    private void dfs(int sheep, int wolf, List<Integer> nextNodes) {
-        for (int i = 0; i < nextNodes.size(); i++) {
-            int curr = nextNodes.get(i);
-
+    
+    private void dfs(int sheep, int wolf, ArrayList<Integer> needGo, Map<Integer, ArrayList<Integer>> graph){
+        for(int i=0; i<needGo.size(); i++){
             int newSheep = sheep;
             int newWolf = wolf;
-
-            if (info[curr] == 0) newSheep++;
+            int currNode = needGo.get(i);
+            
+            if(globalInfo[currNode]==0) newSheep++;
             else newWolf++;
-
-            if (newWolf >= newSheep) continue;
-
-            if (newSheep > maxSheep) maxSheep = newSheep;
-
-            List<Integer> newNext = new ArrayList<Integer>();
-            for (int j = 0; j < nextNodes.size(); j++) {
-                if (j != i) newNext.add(nextNodes.get(j));
+            
+            if(newWolf>=newSheep) continue;
+            if(newSheep>answer) answer=newSheep;
+            
+            ArrayList<Integer> nextGo = new ArrayList<>();
+            
+            for(int j=0; j<needGo.size(); j++) if(j!=i) nextGo.add(needGo.get(j));
+            
+            if(graph.containsKey(currNode)){
+                for(int node : graph.get(currNode)) nextGo.add(node);
             }
-
-            if (graph.containsKey(curr)) {
-                List<Integer> children = graph.get(curr);
-                for (int j = 0; j < children.size(); j++) {
-                    newNext.add(children.get(j));
-                }
-            }
-
-            dfs(newSheep, newWolf, newNext);
+            
+            dfs(newSheep, newWolf, nextGo, graph);
+            
         }
     }
 }
