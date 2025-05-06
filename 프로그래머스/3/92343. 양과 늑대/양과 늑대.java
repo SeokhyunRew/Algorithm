@@ -1,6 +1,6 @@
 import java.util.*;
 class Solution {
-    int answer = 1;
+    int answer = 0;
     int[] globalInfo;
     public int solution(int[] info, int[][] edges) {
         globalInfo = info;
@@ -13,7 +13,10 @@ class Solution {
         }
         
         System.out.println(graph);
-        dfs(1, 0, graph.get(0), graph);
+        
+        ArrayList<Integer> needGo = new ArrayList<>();
+        needGo.add(0);
+        dfs(0, 0, needGo, graph);
         
         return answer;
     }
