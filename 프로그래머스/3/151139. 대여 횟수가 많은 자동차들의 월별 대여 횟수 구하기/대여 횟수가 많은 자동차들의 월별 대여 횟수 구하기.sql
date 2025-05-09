@@ -1,0 +1,29 @@
+WITH period_data AS (
+  SELECT
+    CAR_ID,
+    START_DATE
+  FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+  WHERE START_DATE BETWEEN '2022-08-01' AND '2022-10-31'
+),
+count_data AS (
+  SELECT
+    CAR_ID
+  FROM period_data
+  GROUP BY CAR_ID
+  HAVING COUNT(*) >= 5
+)
+SELECT
+  MONTH(p.START_DATE)      AS MONTH,
+  p.CAR_ID,
+  COUNT(*)                 AS RECORDS
+FROM period_data p
+WHERE p.CAR_ID IN (
+  SELECT CAR_ID
+  FROM count_data
+)
+GROUP BY
+  MONTH(p.START_DATE),
+  p.CAR_ID
+ORDER BY
+  MONTH ASC,
+  p.CAR_ID DESC;
