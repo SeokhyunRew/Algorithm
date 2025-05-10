@@ -1,35 +1,22 @@
 import java.util.*;
 
 class Solution {
-    private final char[] VOWELS = {'A','E','I','O','U'};
-    private String target;   
-    private int count = 0;    
-    private int answer = 0;  
-
     public int solution(String word) {
-        target = word;
-        dfs(new StringBuilder());
-        return answer;
+        final String VOWELS = "AEIOU";
+        List<String> list = new ArrayList<>();
+        
+        dfs(new StringBuilder(), 0, VOWELS, list);
+        
+        return list.indexOf(word);
     }
-
-    private boolean dfs(StringBuilder curr) {
-        if (curr.length() > 0) {
-            count++;
-            if (curr.toString().equals(target)) {
-                answer = count;
-                return true;
-            }
+    
+    private void dfs(StringBuilder sb, int len, String VOWELS, List<String> list) {
+        if (len > 5) return;
+        list.add(sb.toString());
+        for (int i = 0; i < 5; i++) {
+            sb.append(VOWELS.charAt(i));   
+            dfs(sb, len + 1, VOWELS, list);
+            sb.deleteCharAt(sb.length() - 1); 
         }
-        if (curr.length() == 5) {
-            return false;
-        }
-        for (char c : VOWELS) {
-            curr.append(c);
-            if (dfs(curr)) {
-                return true;    
-            }
-            curr.deleteCharAt(curr.length() - 1); 
-        }
-        return false;
     }
 }
