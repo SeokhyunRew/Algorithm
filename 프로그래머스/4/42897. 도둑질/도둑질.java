@@ -4,7 +4,7 @@ class Solution {
         
         if(money.length==0) return 0;
         else if(money.length==1) return money[0];
-        else if(money.length==2) return (money[0]>money[1])?money[0]:money[1];
+        else if(money.length==2) return Math.max(money[0], money[1]);
         
         //1번째를 안 골랐을때
         dp[0] = money[1];
@@ -20,6 +20,6 @@ class Solution {
         for(int i=2; i<money.length-1; i++) dp[i] = Math.max(money[i]+dp[i-2], dp[i-1]);
         int secondAns = dp[money.length-2];
         
-        return (firstAns>secondAns)?firstAns:secondAns;
+        return Math.max(firstAns, secondAns);
     }
 }
