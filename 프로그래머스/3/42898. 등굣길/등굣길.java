@@ -15,8 +15,8 @@ class Solution {
                 if(i==1&&j==1) continue;
                 
                 if(puddleMap[i-1][j] && puddleMap[i][j-1]) dp[i][j] = 0;
-                else if(puddleMap[i-1][j]) dp[i][j] = dp[i][j-1]% MOD;
-                else if(puddleMap[i][j-1]) dp[i][j] = dp[i-1][j]% MOD;
+                else if(puddleMap[i-1][j]) dp[i][j] = dp[i][j-1];
+                else if(puddleMap[i][j-1]) dp[i][j] = dp[i-1][j];
                 else dp[i][j] = (dp[i][j-1]+dp[i-1][j])% MOD;
             }
         }
