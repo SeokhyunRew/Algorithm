@@ -1,19 +1,19 @@
-import java.util.HashSet;
+import java.util.*;
 
 class Solution {
     public boolean solution(String[] phone_book) {
-        HashSet<String> set = new HashSet<>();
+        // 1. 정렬
+        Arrays.sort(phone_book);
 
-        for(String s : phone_book){
-            set.add(s);
-        }
-        
-        for(int i=0; i<phone_book.length; i++){
-            for(int j=1; j<phone_book[i].length(); j++){
-                if(set.contains(phone_book[i].substring(0,j))) return false;
+        // 2. 인접한 것만 확인
+        for (int i = 0; i < phone_book.length - 1; i++) {
+            String cur = phone_book[i];
+            String next = phone_book[i + 1];
+
+            if (next.startsWith(cur)) {
+                return false;
             }
         }
-
-        return true; // 접두어 없음
+        return true;
     }
 }
