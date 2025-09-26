@@ -1,0 +1,8 @@
+-- 코드를 작성해주세요
+SELECT ii.ITEM_ID, ii.ITEM_NAME
+FROM ITEM_INFO AS ii
+JOIN(
+    SELECT ITEM_ID
+    FROM ITEM_TREE
+    WHERE PARENT_ITEM_ID IS NULL
+) root_items ON ii.ITEM_ID = root_items.ITEM_ID
