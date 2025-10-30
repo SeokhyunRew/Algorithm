@@ -1,18 +1,23 @@
+import java.util.*;
 class Solution {
     public int[] solution(int[] prices) {
-        int priceLength = prices.length;
-        int[] answer = new int[priceLength];
+        int[] answer = new int[prices.length];
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> b[0] - a[0]);
         
-        for(int i=0; i<priceLength; i++){
+        for(int i=0; i<prices.length; i++){
             int curr = prices[i];
-            for(int j=i+1; j<priceLength; j++){
-                int next = prices[j];
-                if(curr>next){
-                    answer[i]=j-i;
-                    break;
-                }
-                if(j==priceLength-1) answer[i]=priceLength-i-1;
-            }
+            
+            queue.offer(new int[] {prices[i], i});
+            
+            while(queue.peek()[0]>curr){
+                int[] arr = queue.poll();
+                answer[arr[1]] = i-arr[1];
+            }      
+        }
+        
+        while(!queue.isEmpty()){
+            int[] arr = queue.poll();
+            answer[arr[1]] = prices.length-1-arr[1];
         }
         
         return answer;
