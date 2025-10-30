@@ -1,51 +1,44 @@
 import java.util.*;
-
 class Solution {
     public int solution(int n, int[][] edge) {
-        // 1) 그래프 생성 (무향 인접 리스트)
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        for (int i = 1; i <= n; i++) {
-            graph.put(i, new ArrayList<>());
+        int answer = 0;
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
+        Queue<int[]> queue = new LinkedList<>();
+        int[] keep = new int[n+1];
+        int max = 0;
+        
+        for(int[] node : edge){
+            int node1 = node[0];
+            int node2 = node[1];
+            
+            if(!map.containsKey(node1)) map.put(node1, new ArrayList<>());
+            if(!map.containsKey(node2)) map.put(node2, new ArrayList<>());
+            
+            map.get(node1).add(node2);
+            map.get(node2).add(node1);
         }
-        for (int[] e : edge) {
-            int u = e[0], v = e[1];
-            graph.get(u).add(v);
-            graph.get(v).add(u);
-        }
-
-        // 2) BFS로 1번 노드부터 각 노드까지 최단 거리 계산
-        int[] dist = new int[n + 1];
-        Arrays.fill(dist, -1);
-        Queue<Integer> queue = new LinkedList<>();
-        dist[1] = 0;
-        queue.offer(1);
-
-        while (!queue.isEmpty()) {
-            int curr = queue.poll();
-            for (int next : graph.get(curr)) {
-                if (dist[next] == -1) {
-                    dist[next] = dist[curr] + 1;
-                    queue.offer(next);
+        
+        queue.offer(new int[] {1, 0});
+        set.add(1);
+        
+        while(!queue.isEmpty()){
+            int[] curr = queue.poll();
+            int num = curr[0];
+            int depth = curr[1];
+            
+            for(int next : map.get(num)){
+                if(!set.contains(next)){
+                    keep[next] = depth+1;
+                    set.add(next);
+                    queue.offer(new int[] {next, depth+1});
                 }
             }
         }
-
-        // 3) 최댓값 거리 찾기
-        int maxDist = 0;
-        for (int i = 2; i <= n; i++) {
-            if (dist[i] > maxDist) {
-                maxDist = dist[i];
-            }
-        }
-
-        // 4) 최댓값 거리인 노드 개수 세기
-        int answer = 0;
-        for (int i = 2; i <= n; i++) {
-            if (dist[i] == maxDist) {
-                answer++;
-            }
-        }
-
+        
+        for(int num : keep) max=(num>max)?num:max;
+        for(int num : keep) if(num==max) answer++;
+        
         return answer;
     }
 }
