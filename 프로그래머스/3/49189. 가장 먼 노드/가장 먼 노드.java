@@ -5,7 +5,6 @@ class Solution {
         Map<Integer, List<Integer>> map = new HashMap<>();
         Set<Integer> set = new HashSet<>();
         Queue<int[]> queue = new LinkedList<>();
-        int[] keep = new int[n+1];
         int max = 0;
         
         for(int[] node : edge){
@@ -27,17 +26,22 @@ class Solution {
             int num = curr[0];
             int depth = curr[1];
             
+            int count=0;
             for(int next : map.get(num)){
                 if(!set.contains(next)){
-                    keep[next] = depth+1;
                     set.add(next);
+                    count++;
                     queue.offer(new int[] {next, depth+1});
                 }
             }
+            if(count==0){
+                if(max<depth){
+                    answer = 0;
+                    max = depth;
+                }
+                answer++;
+            }
         }
-        
-        for(int num : keep) max=(num>max)?num:max;
-        for(int num : keep) if(num==max) answer++;
         
         return answer;
     }
